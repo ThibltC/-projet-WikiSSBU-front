@@ -1,0 +1,14 @@
+.Spirits {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.imageSpirit img{
+    height: 300px;
+    width: 300px;
+    object-fit: cover;
+    margin-left: 10px
+}
+
