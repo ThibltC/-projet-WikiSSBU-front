@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
-import { getListSeries } from '../actions/seriesActions'
-import { postSpirit, searchSpirits } from '../actions/spiritsActions'
 import { connect } from 'react-redux';
 
+import { getListSeries } from '../actions/seriesActions'
+import { postSpirit } from '../actions/spiritsActions'
 
-class FormSpirits extends Component {
+
+
+class FormSpiritsPost extends Component {
 
     state = {
         selectedFile: null,
@@ -14,7 +16,7 @@ class FormSpirits extends Component {
         spirit_type: '',
         serie: '',
         rank: '',
-        skill:''
+        skill: ''
     };
 
     componentDidMount = () => {
@@ -35,10 +37,8 @@ class FormSpirits extends Component {
 
     handleSubmit = event => {
         event.preventDefault()
-        const { scrud, postSpirit, searchSpirits } = this.props
-        const { id, name, selectedFile, spirit_type, serie, rank, skill } = this.state
-        if (scrud === 'post') { postSpirit(id, name, selectedFile, spirit_type, serie, rank) }
-        if (scrud === 'get') { searchSpirits(name, serie, spirit_type, rank, skill) }
+        const { id, name, selectedFile, spirit_type, serie, rank } = this.state
+        this.props.postSpirit(id, name, selectedFile, spirit_type, serie, rank)
     }
 
     handleChangeFile = event => {
@@ -52,34 +52,35 @@ class FormSpirits extends Component {
 
 
     render() {
-        const { scrud, listOfSerie } = this.props
+        const { listOfSerie } = this.props
         return (
-            <div className='FormSpirits'>
+            <div className='FormSpiritsPost'>
                 <form onSubmit={this.handleSubmit} method='POST' encType="multipart/form-data">
-                    {scrud === 'post' &&
-                        <div className='formForPost'>
-                            <label htmlFor="file-input">
-                                <img
-                                    src={this.state.image}
-                                    alt="picture_spirit"
-                                />
-                            </label>
-                            <input
-                                id="file-input"
-                                type="file"
-                                name="picture_spirit"
-                                onChange={this.handleChangeFile}
-                                hidden
-                            />
-                            <input
-                                type="number"
-                                min='1'
-                                onChange={this.handleChange}
-                                value={this.state.id}
-                                name="id"
-                                placeholder={`Numéro de l'esprit`}
-                            />
-                        </div>}
+
+                    <label htmlFor="file-input">
+                        <img
+                            src={this.state.image}
+                            alt="picture_spirit"
+                        />
+                    </label>
+                    
+                    <input
+                        name="picture_spirit"
+                        id="file-input"
+                        type="file"
+
+                        onChange={this.handleChangeFile}
+                        hidden
+                    />
+                    <input
+                        type="number"
+                        min='1'
+                        onChange={this.handleChange}
+                        value={this.state.id}
+                        name="id"
+                        placeholder={`Numéro de l'esprit`}
+                    />
+
                     <input
                         type="text"
                         onChange={this.handleChange}
@@ -88,10 +89,11 @@ class FormSpirits extends Component {
                         placeholder={`Nom de l'esprit`}
                     />
                     <input
+                        name="rank"
                         type="number"
                         onChange={this.handleChange}
                         value={this.state.rank}
-                        name="rank"
+
                         min='0'
                         max='4'
                         placeholder={`Rareté de l'esprit`}
@@ -100,7 +102,6 @@ class FormSpirits extends Component {
                         name="serie"
                         onChange={this.handleChange}
                         defaultValue="serie"
-                        onClick={this.handleClick}
                     >
                         <option value="serie" disabled>
                             Série&nbsp;
@@ -118,14 +119,13 @@ class FormSpirits extends Component {
                             Type d'esprit&nbsp;
                         </option>
                         <optgroup>
-                            <option>Aucun</option>
                             <option>Primaire</option>
                             <option>Soutien</option>
+                            <option>Combattant</option>
+                            <option>Maître</option>
                         </optgroup>
                     </select>
-                    {scrud === 'post' && <button>Valider</button>}
-                    {scrud === 'get' && <button>Chercher</button>}
-
+                    <button>Valider</button>
                 </form>
             </div>
         )
@@ -136,4 +136,4 @@ const mapStateToProps = state => ({
     listOfSerie: state.series.listSeries
 })
 
-export default connect(mapStateToProps, { getListSeries, postSpirit, searchSpirits })(FormSpirits)
+export default connect(mapStateToProps, { getListSeries, postSpirit })(FormSpiritsPost)

@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
-import EditSpirits from './components/EditSpirit';
-import Spirits from './components/Spirits'
-import logo from './logo.svg';
+import Home from './components/Home'
+import AdminAccount from './components/AdminAccount';
+import SpiritsComponent from './components/SpiritsComponent'
+
+import wallpaper from './SuperSmashBrosUltimate.jpg';
+
 import './App.css';
+
 
 class App extends Component {
 
@@ -12,14 +16,12 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
+          <img src={wallpaper} className="wallpaper" alt="wallpaper" />
         </header>
         <Switch>
-          <Route path='/admin' component={EditSpirits}/>
-          <Route path='/spirits' component={Spirits}/>
+          <Route exact path='/' component={Home} />
+          <Route path='/admin' component={AdminAccount} />
+          <Route path='/spirits' component={SpiritsComponent} />
         </Switch>
       </div>
     );
